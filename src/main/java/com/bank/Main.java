@@ -30,5 +30,13 @@ public class Main {
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
+
+        try {
+            System.out.println("Trying to make a withdraw");
+            service.withdraw(400,"12345-6");
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
