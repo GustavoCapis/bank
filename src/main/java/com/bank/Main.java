@@ -1,5 +1,6 @@
 package main.java.com.bank;
 
+import main.java.com.bank.exception.AccountNotFoundException;
 import main.java.com.bank.model.Account;
 import main.java.com.bank.model.CheckingAccount;
 import main.java.com.bank.model.Client;
@@ -26,17 +27,24 @@ public class Main {
 
         try {
             System.out.println("Trying to make a deposit");
-            service.deposit(500,"12345-6");
+            service.deposit(500, "12345-6");
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
 
         try {
             System.out.println("Trying to make a withdraw");
-            service.withdraw(400,"12345-6");
+            service.withdraw(400, "12345-6");
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
 
+        try {
+            System.out.println("Trying to get account information");
+            Account foundAccount = service.getAccountDetails("12345-6");
+            System.out.println("Account details: \n" + foundAccount);
+        } catch (AccountNotFoundException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
     }
 }

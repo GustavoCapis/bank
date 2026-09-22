@@ -51,4 +51,11 @@ public abstract class Account {
             this.balance -= amount;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Account Number: '" + accountNumber + '\'' +
+                ", Holder: " + holder +
+                ", Balance: " + balance;
+    }
 }

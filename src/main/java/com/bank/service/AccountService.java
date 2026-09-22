@@ -53,4 +53,13 @@ public class AccountService {
         }
     }
 
+
+    public Account getAccountDetails(String accountNumber){
+        Account accountExists = accountRepository.findByNumber(accountNumber);
+        if (accountExists == null) {
+            throw new AccountNotFoundException("Account not found.");
+        }
+        return accountExists;
+    }
+
 }
