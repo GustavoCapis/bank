@@ -2,7 +2,7 @@ package main.java.com.bank.service;
 
 import main.java.com.bank.model.Account;
 import main.java.com.bank.repository.AccountRepository;
-import main.java.com.bank.repository.InMemoryAccountRepository;
+import main.java.com.bank.exception.AccountNotFoundException;
 
 public class AccountService {
     private final AccountRepository accountRepository;
@@ -20,4 +20,20 @@ public class AccountService {
         accountRepository.save(account);
         System.out.println("Account created successfully!");
     }
+
+    public void deposit(double amount, String accountNumber) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0.");
+        }
+        Account accountExists = accountRepository.findByNumber(accountNumber);
+        if (accountExists == null) {
+            throw new AccountNotFoundException("Account not found.");
+        }
+
+        accountExists.setBalance(accountExists.getBalance() + amount);
+        accountRepository.save(accountExists);
+        System.out.println("Deposit of " + amount + " to account " + accountExists.getAccountNumber() + " made successfully!");
+
+    }
+
 }

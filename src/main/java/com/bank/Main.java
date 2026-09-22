@@ -25,9 +25,9 @@ public class Main {
         }
 
         try {
-            System.out.println("Trying to create account");
-            service.createAccount(account1);
-        } catch (Exception e) {
+            System.out.println("Trying to make a deposit");
+            service.deposit(500,"12345-6");
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
