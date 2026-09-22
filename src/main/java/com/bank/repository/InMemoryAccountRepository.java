@@ -14,7 +14,18 @@ public class InMemoryAccountRepository implements AccountRepository {
     }
 
     @Override
+    public Account findByNumber(String accountNumber) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                return account;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public List<Account> findAll() {
         return new ArrayList<>(accounts);
     }
 }
+
