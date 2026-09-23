@@ -1,16 +1,17 @@
 package main.java.com.bank.model;
 
 public enum AccountType {
-    CHECKING("Checking Account"),
-    SAVINGS("Savings Account");
+    CHECKING(1),
+    SAVINGS(2);
 
-    private final String description;
+    private final int id;
 
-    AccountType(String description) {
-        this.description = description;
+    AccountType(int id) {
+        this.id =  id;
     }
 
-    public String getDescription() {
-        return description;
+    public int getId() {
+        return id;
     }
+
 }

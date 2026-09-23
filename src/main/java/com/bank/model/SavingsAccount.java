@@ -1,8 +1,8 @@
 package main.java.com.bank.model;
 
 public class SavingsAccount extends Account {
-    public SavingsAccount(String accountNumber, Client holder) {
-        super(accountNumber, holder);
+    public SavingsAccount(String accountNumber, Client holder, AccountType type) {
+        super(accountNumber, holder, type);
     }
     public void yieldInterest(double rate) {
         if (rate > 0) {

@@ -3,12 +3,13 @@ package main.java.com.bank.model;
 public abstract class Account {
     private String accountNumber;
     private Client holder;
-    protected double balance;
+    private final AccountType type;
+    protected double balance = 0;
 
-    public Account(String accountNumber, Client holder) {
+    public Account(String accountNumber, Client holder, AccountType type) {
         this.accountNumber = accountNumber;
         this.holder = holder;
-        this.balance = balance;
+        this.type = type;
     }
 
     public double getBalance() {
