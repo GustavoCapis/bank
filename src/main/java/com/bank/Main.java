@@ -1,8 +1,6 @@
 package main.java.com.bank;
 
-import main.java.com.bank.model.Account;
-import main.java.com.bank.model.AccountType;
-import main.java.com.bank.model.Client;
+import main.java.com.bank.model.*;
 import main.java.com.bank.repository.AccountRepository;
 import main.java.com.bank.repository.InMemoryAccountRepository;
 import main.java.com.bank.service.AccountService;
@@ -46,15 +44,25 @@ public class Main {
                     int type = input.nextInt();
                     input.nextLine();
 
-                    AccountType accountType;
+                    Client client = new Client(name, cpf);
+
+                    Account account;
 
                     if (type == 1) {
-                        accountType = AccountType.CHECKING;
+                        account = new CheckingAccount(accountNumber, client);
                     } else if (type == 2) {
-                        accountType = AccountType.SAVINGS;
+                        account = new SavingsAccount(accountNumber, client);
                     } else {
                         throw new IllegalArgumentException("Invalid account type! (Type must be 1 or 2)");
                     }
+
+                    try {
+                        service.createAccount(account);
+                        System.out.println("Account created successfully!");
+                    } catch (Exception e) {
+                        System.out.println("Error saving account: " + e.getMessage());
+                    }
+                    break;
 
                 case 2:
                     System.out.println("Enter deposit amount: ");
@@ -66,6 +74,20 @@ public class Main {
                     double withdrawalAmount = input.nextDouble();
                     break;
                 case 4:
+                    System.out.println("Enter account number: ");
+                    Scanner searchAccountNumber = new Scanner(System.in);
+
+                    Account foundAccount = service.getAccountDetails(searchAccountNumber.nextLine());
+
+                    if (foundAccount != null) {
+                        System.out.println("Account details: \n"
+                                + "Account number: " + foundAccount.getAccountNumber()
+                                + "\n Holder: " + foundAccount.getHolder().getName());
+                        System.out.println("Balance: " + foundAccount.getBalance());
+                    } else {
+                        System.out.println("Account not found!");
+                    }
+                    break;
 
             }
         }

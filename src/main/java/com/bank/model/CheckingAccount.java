@@ -5,8 +5,8 @@ import main.java.com.bank.exception.InsufficientBalanceException;
 public class CheckingAccount extends Account {
     private double overdraftLimit;
 
-    public CheckingAccount(String accountNumber, Client holder, AccountType type, double overdraftLimit) {
-        super(accountNumber, holder, type);
+    public CheckingAccount(String accountNumber, Client holder) {
+        super(accountNumber, holder);
         this.overdraftLimit = overdraftLimit;
     }
 
