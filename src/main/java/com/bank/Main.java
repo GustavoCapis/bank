@@ -92,9 +92,9 @@ public class Main {
 
                 case 4:
                     System.out.println("Enter account number: ");
-                    Scanner searchAccountNumber = new Scanner(System.in);
+                    Scanner searchNum = new Scanner(System.in);
 
-                    Account foundAccount = service.getAccountDetails(searchAccountNumber.nextLine());
+                    Account foundAccount = service.getAccountDetails(searchNum.nextLine());
 
                     if (foundAccount != null) {
                         System.out.println("Account details: \n" + "Account number: " + foundAccount.getAccountNumber() + "\n Holder: " + foundAccount.getHolder().getName());
