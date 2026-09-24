@@ -65,8 +65,16 @@ public class Main {
                     break;
 
                 case 2:
+                    System.out.println("Enter account number: ");
+                    accountNumber = input.nextLine();
                     System.out.println("Enter deposit amount: ");
                     double depositAmount = input.nextDouble();
+                    input.nextLine();
+                    try {
+                        service.deposit(depositAmount, accountNumber);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
 
                 case 3:
