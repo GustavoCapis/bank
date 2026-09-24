@@ -2,14 +2,14 @@ package main.java.com.bank;
 
 import main.java.com.bank.model.*;
 import main.java.com.bank.repository.AccountRepository;
-import main.java.com.bank.repository.InMemoryAccountRepository;
+import main.java.com.bank.repository.DbAccountRepository;
 import main.java.com.bank.service.AccountService;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        AccountRepository repository = new InMemoryAccountRepository();
+        AccountRepository repository = new DbAccountRepository();
         AccountService service = new AccountService(repository);
         Scanner input = new Scanner(System.in);
 
@@ -97,9 +97,7 @@ public class Main {
                     Account foundAccount = service.getAccountDetails(searchAccountNumber.nextLine());
 
                     if (foundAccount != null) {
-                        System.out.println("Account details: \n"
-                                + "Account number: " + foundAccount.getAccountNumber()
-                                + "\n Holder: " + foundAccount.getHolder().getName());
+                        System.out.println("Account details: \n" + "Account number: " + foundAccount.getAccountNumber() + "\n Holder: " + foundAccount.getHolder().getName());
                         System.out.println("Balance: " + foundAccount.getBalance());
                     } else {
                         System.out.println("Account not found!");

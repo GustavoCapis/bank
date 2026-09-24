@@ -5,7 +5,7 @@ import main.java.com.bank.model.Account;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryAccountRepository implements AccountRepository {
+public class DbAccountRepository implements AccountRepository {
     private List<Account> accounts = new ArrayList<>();
 
     @Override
