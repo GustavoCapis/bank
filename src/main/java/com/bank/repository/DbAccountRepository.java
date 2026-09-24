@@ -130,6 +130,66 @@ public class DbAccountRepository implements AccountRepository {
 
     @Override
     public List<Account> findAll() {
+        String sql = "SELECT * FROM accounts";
+        List<Account> accountList = new ArrayList<>();
 
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DatabaseConnection.connectDb();
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String cpf = rs.getString("holder_cpf");
+                String accNumber = rs.getString("account_number");
+                String holderName = rs.getString("holder_name");
+                double balance = rs.getDouble("balance");
+                String accountType = rs.getString("account_type");
+
+                Client client = new Client(holderName, cpf);
+                Account account = null;
+
+                switch (accountType) {
+                    case "CheckingAccount":
+                        account = new CheckingAccount(accNumber, client);
+                        break;
+
+                    case "SavingsAccount":
+                        account = new SavingsAccount(accNumber, client);
+                        break;
+
+                    default:
+                        System.out.println("Account type not found: " + accountType);
+                }
+                if (account != null) {
+                    account.setBalance(balance);
+                    accountList.add(account);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERROR ao listar contas: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return accountList;
+    }
 }
-
