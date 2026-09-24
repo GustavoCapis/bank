@@ -78,9 +78,18 @@ public class Main {
                     break;
 
                 case 3:
+                    System.out.println("Enter account number: ");
+                    accountNumber = input.nextLine();
                     System.out.println("Enter withdrawal amount: ");
                     double withdrawalAmount = input.nextDouble();
+                    input.nextLine();
+                    try {
+                        service.withdraw(withdrawalAmount, accountNumber);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
+
                 case 4:
                     System.out.println("Enter account number: ");
                     Scanner searchAccountNumber = new Scanner(System.in);
