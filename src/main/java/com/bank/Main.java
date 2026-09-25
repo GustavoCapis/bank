@@ -68,12 +68,14 @@ public class Main {
                     System.out.println("Enter account number: ");
                     accountNumber = input.nextLine();
                     System.out.println("Enter deposit amount: ");
+
                     double depositAmount = input.nextDouble();
                     input.nextLine();
                     try {
                         service.deposit(depositAmount, accountNumber);
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        System.out.println("ERROR: " + e.getMessage());
+                        e.printStackTrace();
                     }
                     break;
 
@@ -97,7 +99,8 @@ public class Main {
                     Account foundAccount = service.getAccountDetails(searchNum.nextLine());
 
                     if (foundAccount != null) {
-                        System.out.println("Account details: \n" + "Account number: " + foundAccount.getAccountNumber() + "\n Holder: " + foundAccount.getHolder().getName());
+                        System.out.println("Account details: \n" + "Account number: " + foundAccount.getAccountNumber());
+                        System.out.println("Account holder: " + foundAccount.getHolder().getName());
                         System.out.println("Balance: " + foundAccount.getBalance());
                     } else {
                         System.out.println("Account not found!");

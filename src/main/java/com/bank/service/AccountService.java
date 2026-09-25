@@ -30,7 +30,7 @@ public class AccountService {
             throw new AccountNotFoundException("Account not found.");
         }
         accountExists.setBalance(accountExists.getBalance() + amount);
-        accountRepository.save(accountExists);
+        accountRepository.updateBalance(accountExists);
         System.out.println("Deposit of " + amount + " to account " + accountExists.getAccountNumber() + " made successfully!");
     }
 
