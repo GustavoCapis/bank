@@ -88,7 +88,8 @@ public class Main {
                     try {
                         service.withdraw(withdrawalAmount, accountNumber);
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        System.out.println("ERROR: " + e.getMessage());
+                        e.printStackTrace();
                     }
                     break;
 

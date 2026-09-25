@@ -48,7 +48,7 @@ public class AccountService {
             throw new IllegalArgumentException("Amount must be less than or equal to balance.");
         } else {
             accountExists.setBalance(accountExists.getBalance() - amount);
-            accountRepository.save(accountExists);
+            accountRepository.updateBalance(accountExists);
             System.out.println("Withdraw of " + amount + " from account " + accountExists.getAccountNumber() + " made successfully!");
         }
     }
