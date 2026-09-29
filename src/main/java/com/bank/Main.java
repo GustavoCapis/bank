@@ -13,6 +13,15 @@ public class Main {
         AccountService service = new AccountService(repository);
         Scanner input = new Scanner(System.in);
 
+        /* TODO:
+         *  Limpar o menu quando escolher opção
+         *  Tratar erros de input inválidos
+         *  Tratar erro de busca por conta inexistente
+         *  Implementar DELETE
+         *  Implementar extrato
+         *  Implementar overDraft
+         * */
+
         while (true) {
             System.out.println("====== MENU ======");
             System.out.println("Choose an option: ");
@@ -32,12 +41,9 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter account number: ");
-                    String accountNumber = input.nextLine();
-                    System.out.println("Enter account holder's name: ");
-                    String name = input.nextLine();
-                    System.out.println("Enter account holder's cpf: ");
-                    String cpf = input.nextLine();
+                    String accountNumber = readValidAccountNumber(input, "Enter account number: ");
+                    String name = readValidName(input, "Enter account holder's name: ");
+                    String cpf = readValidCpf(input, "Enter account holder's cpf: ");
                     System.out.println("Enter account's type:\n ");
                     System.out.println("1. Checking Account");
                     System.out.println("2. Savings Account");
@@ -80,6 +86,7 @@ public class Main {
                     break;
 
                 case 3:
+                    //TODO: mostrar saldo no console
                     System.out.println("Enter account number: ");
                     accountNumber = input.nextLine();
                     System.out.println("Enter withdrawal amount: ");
@@ -111,5 +118,65 @@ public class Main {
             }
         }
         input.close();
+    }
+
+    private static String readValidAccountNumber(Scanner input, String prompt) {
+        String line = "";
+        String format = "\\d{4}-\\d";
+
+        while (true) {
+            System.out.print(prompt);
+            line = input.nextLine().trim();
+
+            if (line.isBlank()) {
+                System.out.println("ERROR: Account number cannot be blank!");
+            } else if (!line.matches(format)) {
+                System.out.println("ERROR: Invalid format! Account number must follow the pattern 1234-5 (4 digits, hyphen, 1 digit).");
+            } else {
+                return line;
+            }
+        }
+    }
+
+    private static String readValidCpf(Scanner input, String prompt) {
+        String format = "\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}";
+
+        while (true) {
+            String cpf = readValidString(input, prompt);
+
+            if (cpf.matches(format)) {
+                return cpf;
+            }
+            System.out.println("ERROR: Invalid format! CPF must follow the pattern 111.222.333-00");
+        }
+    }
+
+    private static String readValidString(Scanner input, String prompt) {
+        String line = "";
+        while (line.isBlank()) {
+            System.out.print(prompt);
+            line = input.nextLine().trim();
+            if (line.isBlank()) {
+                System.out.println("ERROR: field cannot be empty! Please try again.");
+            }
+        }
+        return line;
+    }
+
+    private static boolean isLettersOnly(String line) {
+        return line.matches("^[a-zA-ZÀ-ÿ\\s]{2,}$");
+    }
+
+    private static String readValidName(Scanner input, String prompt) {
+        while (true) {
+            String name = readValidString(input, prompt);
+            if (name.length() < 2) {
+                System.out.println("ERROR: Name is too short! It must have at least 2 characters.");
+            } else if (!isLettersOnly(name)) {
+                System.out.println("ERROR: Name must contain only letters!");
+            } else {
+                return name;
+            }
+        }
     }
 }
