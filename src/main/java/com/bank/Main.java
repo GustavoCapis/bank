@@ -1,5 +1,7 @@
 package main.java.com.bank;
 
+import main.java.com.bank.exception.AccountNotFoundException;
+import main.java.com.bank.exception.InsufficientBalanceException;
 import main.java.com.bank.model.*;
 import main.java.com.bank.repository.AccountRepository;
 import main.java.com.bank.repository.DbAccountRepository;
@@ -74,16 +76,20 @@ public class Main {
 
                 case 3:
                     accountNumber = readValidAccountNumber(input, "Enter account number: ");
-                    double balance = service.getAccountDetails(accountNumber).getBalance();
-                    System.out.println("Account " + accountNumber + " current balance: " + balance);
-                    System.out.println("Enter withdrawal amount: ");
-                    double withdrawalAmount = input.nextDouble();
-                    input.nextLine();
-                    try {
-                        service.withdraw(withdrawalAmount, accountNumber);
-                    } catch (Exception e) {
-                        System.out.println("ERROR: " + e.getMessage());
-                        e.printStackTrace();
+                    account = service.getAccountDetails(accountNumber);
+                    if (account == null) {
+                        System.out.println("ERROR: Account does not exist!");
+                    } else {
+                        double balance = account.getBalance();
+                        System.out.println("Account " + accountNumber + " current balance: " + balance);
+                        double withdrawalAmount = readValidDouble(input, "Enter withdrawal amount: ", balance);
+
+                        try {
+                            service.withdraw(withdrawalAmount, accountNumber);
+                            System.out.println("Account " + accountNumber + " withdrawn " + withdrawalAmount + " successfully!");
+                        } catch (IllegalArgumentException | AccountNotFoundException | InsufficientBalanceException e) {
+                            System.out.println("ERROR: " + e.getMessage());
+                        }
                     }
                     break;
 
@@ -198,6 +204,17 @@ public class Main {
             } catch (NumberFormatException e) {
                 System.out.println("ERROR: Invalid input! Must be a number greater than 0. Please try again.");
                 System.out.println("ERROR: " + e.getMessage());
+            }
+        }
+    }
+
+    private static double readValidDouble(Scanner input, String prompt, double maxAllowed) {
+        while (true) {
+            double amount = readValidDouble(input, prompt);
+            if (amount > maxAllowed) {
+                System.out.println("ERROR: Amount cannot be greater than balance: " + maxAllowed + ". Please try again.");
+            } else {
+                return amount;
             }
         }
     }
