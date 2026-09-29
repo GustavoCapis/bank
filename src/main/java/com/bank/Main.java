@@ -17,8 +17,6 @@ public class Main {
 
         /* TODO:
          *  Limpar o menu quando escolher opção
-         *  Tratar erros de input inválidos
-         *  Tratar erro de busca por conta inexistente
          *  Implementar DELETE
          *  Implementar extrato
          *  Implementar overDraft
@@ -41,15 +39,17 @@ public class Main {
                 break;
             }
 
+            String accountNumber;
+            Account account;
+
             switch (choice) {
                 case 1:
-                    String accountNumber = readValidAccountNumber(input, "Enter account number: ");
+                    accountNumber = readValidAccountNumber(input, "Enter account number: ");
                     String name = readValidName(input, "Enter account holder's name: ");
                     String cpf = readValidCpf(input, "Enter account holder's cpf: ");
                     String accountType = readValidAccountType(input);
 
                     Client client = new Client(name, cpf);
-                    Account account;
 
                     if (accountType.equals("1")) {
                         account = new CheckingAccount(accountNumber, client);
@@ -94,15 +94,13 @@ public class Main {
                     break;
 
                 case 4:
-                    System.out.println("Enter account number: ");
-                    Scanner searchNum = new Scanner(System.in);
+                    accountNumber = readValidAccountNumber(input, "Enter account number: ");
+                    account = service.getAccountDetails(accountNumber);
 
-                    Account foundAccount = service.getAccountDetails(searchNum.nextLine());
-
-                    if (foundAccount != null) {
-                        System.out.println("Account details: \n" + "Account number: " + foundAccount.getAccountNumber());
-                        System.out.println("Account holder: " + foundAccount.getHolder().getName());
-                        System.out.println("Balance: " + foundAccount.getBalance());
+                    if (account != null) {
+                        System.out.println("Account details: \n" + "Account number: " + account.getAccountNumber());
+                        System.out.println("Account holder: " + account.getHolder().getName());
+                        System.out.println("Balance: " + account.getBalance());
                     } else {
                         System.out.println("Account not found!");
                     }
