@@ -63,17 +63,12 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.println("Enter account number: ");
-                    accountNumber = input.nextLine();
-                    System.out.println("Enter deposit amount: ");
-
-                    double depositAmount = input.nextDouble();
-                    input.nextLine();
+                    accountNumber = readValidAccountNumber(input, "Enter account number: ");
+                    double depositAmount = readValidDouble(input, "Enter deposit amount: ");
                     try {
                         service.deposit(depositAmount, accountNumber);
                     } catch (Exception e) {
                         System.out.println("ERROR: " + e.getMessage());
-                        e.printStackTrace();
                     }
                     break;
 
@@ -185,6 +180,25 @@ public class Main {
                 return type;
             }
             System.out.println("ERROR: Invalid account type! (Type must be 1 or 2)");
+        }
+    }
+
+    private static double readValidDouble(Scanner input, String prompt) {
+        while (true) {
+            String amount = readValidString(input, prompt);
+            amount = amount.replaceAll(",", ".");
+            double number;
+            try {
+                number = Double.parseDouble(amount);
+                if (number <= 0) {
+                    System.out.println("ERROR: Amount must be greater than 0.");
+                } else {
+                    return number;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("ERROR: Invalid input! Must be a number greater than 0. Please try again.");
+                System.out.println("ERROR: " + e.getMessage());
+            }
         }
     }
 
