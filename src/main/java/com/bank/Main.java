@@ -6,7 +6,7 @@ import main.java.com.bank.model.*;
 import main.java.com.bank.repository.AccountRepository;
 import main.java.com.bank.repository.DbAccountRepository;
 import main.java.com.bank.service.AccountService;
-
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -17,6 +17,7 @@ public class Main {
 
         /* TODO:
          *  Limpar o menu quando escolher opção
+         *  Implementar select de todas as contas que existem
          *  Implementar DELETE
          *  Implementar extrato
          *  Implementar overDraft
@@ -29,6 +30,7 @@ public class Main {
             System.out.println("2. Deposit");
             System.out.println("3. Withdraw");
             System.out.println("4. Account details");
+            System.out.println("5. Show all accounts");
             System.out.println("0. Exit");
 
             int choice = input.nextInt();
@@ -103,6 +105,27 @@ public class Main {
                         System.out.println("Balance: " + account.getBalance());
                     } else {
                         System.out.println("Account not found!");
+                    }
+                    break;
+                case 5:
+                    List<Account> accounts = service.getAllAccounts();
+
+                    if (accounts.isEmpty()) {
+                        System.out.println("\nNo accounts registered yet.\n");
+                    } else {
+                        System.out.println("\n=================================== ALL ACCOUNTS ===================================");
+                        System.out.printf("%-10s | %-20s | %-14s | %-18s | %-10s%n", "ACCOUNT", "HOLDER NAME", "CPF", "TYPE", "BALANCE");
+                        System.out.println("-----------------------------------------------------------------------------------");
+
+                        for (Account acc : accounts) {
+                            System.out.printf("%-10s | %-20s | %-14s | %-18s | $%.2f%n",
+                                    acc.getAccountNumber(),
+                                    acc.getHolder().getName(),
+                                    acc.getHolder().getCpf(),
+                                    acc.getClass().getSimpleName(),
+                                    acc.getBalance());
+                        }
+                        System.out.println("===================================================================================\n");
                     }
                     break;
             }

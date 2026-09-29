@@ -3,6 +3,7 @@ package main.java.com.bank.service;
 import main.java.com.bank.model.Account;
 import main.java.com.bank.repository.AccountRepository;
 import main.java.com.bank.exception.AccountNotFoundException;
+import java.util.List;
 
 public class AccountService {
     private final AccountRepository accountRepository;
@@ -52,13 +53,16 @@ public class AccountService {
         }
     }
 
-
-    public Account getAccountDetails(String accountNumber){
+    public Account getAccountDetails(String accountNumber) {
         Account accountExists = accountRepository.findByNumber(accountNumber);
         if (accountExists == null) {
             throw new AccountNotFoundException("Account not found.");
         }
         return accountExists;
+    }
+
+    public List<Account> getAllAccounts() {
+        return accountRepository.findAll();
     }
 
 }
