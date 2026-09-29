@@ -73,9 +73,9 @@ public class Main {
                     break;
 
                 case 3:
-                    //TODO: mostrar saldo no console
-                    System.out.println("Enter account number: ");
-                    accountNumber = input.nextLine();
+                    accountNumber = readValidAccountNumber(input, "Enter account number: ");
+                    double balance = service.getAccountDetails(accountNumber).getBalance();
+                    System.out.println("Account " + accountNumber + " current balance: " + balance);
                     System.out.println("Enter withdrawal amount: ");
                     double withdrawalAmount = input.nextDouble();
                     input.nextLine();

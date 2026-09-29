@@ -49,7 +49,6 @@ public class AccountService {
         } else {
             accountExists.setBalance(accountExists.getBalance() - amount);
             accountRepository.updateBalance(accountExists);
-            System.out.println("Withdraw of " + amount + " from account " + accountExists.getAccountNumber() + " made successfully!");
         }
     }
 
