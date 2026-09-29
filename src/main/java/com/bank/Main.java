@@ -44,24 +44,16 @@ public class Main {
                     String accountNumber = readValidAccountNumber(input, "Enter account number: ");
                     String name = readValidName(input, "Enter account holder's name: ");
                     String cpf = readValidCpf(input, "Enter account holder's cpf: ");
-                    System.out.println("Enter account's type:\n ");
-                    System.out.println("1. Checking Account");
-                    System.out.println("2. Savings Account");
-                    int type = input.nextInt();
-                    input.nextLine();
+                    String accountType = readValidAccountType(input);
 
                     Client client = new Client(name, cpf);
-
                     Account account;
 
-                    if (type == 1) {
+                    if (accountType.equals("1")) {
                         account = new CheckingAccount(accountNumber, client);
-                    } else if (type == 2) {
-                        account = new SavingsAccount(accountNumber, client);
                     } else {
-                        throw new IllegalArgumentException("Invalid account type! (Type must be 1 or 2)");
+                        account = new SavingsAccount(accountNumber, client);
                     }
-
                     try {
                         service.createAccount(account);
                         System.out.println("Account created successfully!");
@@ -114,10 +106,11 @@ public class Main {
                         System.out.println("Account not found!");
                     }
                     break;
-
             }
+
         }
         input.close();
+
     }
 
     private static String readValidAccountNumber(Scanner input, String prompt) {
@@ -179,4 +172,20 @@ public class Main {
             }
         }
     }
+
+    private static String readValidAccountType(Scanner input) {
+        while (true) {
+            String prompt = """
+                    Chose account's type:\s
+                    1.Checking Account\s
+                    2.Savings Account""";
+            String type = readValidString(input, prompt);
+
+            if (type.equals("1") || type.equals("2")) {
+                return type;
+            }
+            System.out.println("ERROR: Invalid account type! (Type must be 1 or 2)");
+        }
+    }
+
 }
