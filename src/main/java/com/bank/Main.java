@@ -6,6 +6,7 @@ import main.java.com.bank.model.*;
 import main.java.com.bank.repository.AccountRepository;
 import main.java.com.bank.repository.DbAccountRepository;
 import main.java.com.bank.service.AccountService;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,8 +18,7 @@ public class Main {
 
         /* TODO:
          *  Limpar o menu quando escolher opção
-         *  Implementar select de todas as contas que existem
-         *  Implementar DELETE
+         *  Implementar tratamento de erros de input do DELETE
          *  Implementar extrato
          *  Implementar overDraft
          * */
@@ -31,6 +31,7 @@ public class Main {
             System.out.println("3. Withdraw");
             System.out.println("4. Account details");
             System.out.println("5. Show all accounts");
+            System.out.println("6. Delete account");
             System.out.println("0. Exit");
 
             int choice = input.nextInt();
@@ -118,16 +119,30 @@ public class Main {
                         System.out.println("-----------------------------------------------------------------------------------");
 
                         for (Account acc : accounts) {
-                            System.out.printf("%-10s | %-20s | %-14s | %-18s | $%.2f%n",
-                                    acc.getAccountNumber(),
-                                    acc.getHolder().getName(),
-                                    acc.getHolder().getCpf(),
-                                    acc.getClass().getSimpleName(),
-                                    acc.getBalance());
+                            System.out.printf("%-10s | %-20s | %-14s | %-18s | $%.2f%n", acc.getAccountNumber(), acc.getHolder().getName(), acc.getHolder().getCpf(), acc.getClass().getSimpleName(), acc.getBalance());
                         }
                         System.out.println("===================================================================================\n");
                     }
                     break;
+                case 6:
+                    accountNumber = readValidAccountNumber(input, "Enter account number: ");
+                    try {
+                        account = service.getAccountDetails(accountNumber);
+                        if (account != null) {
+                            if (confirmDeletion(input, account)) {
+                                try {
+                                    service.deleteAccount(accountNumber);
+                                    System.out.println("Account deleted successfully!");
+                                } catch (Exception e) {
+                                    System.out.println("ERROR: " + e.getMessage());
+                                }
+                            }
+                        }
+                    } catch (AccountNotFoundException e) {
+                        System.out.println("ERROR: " + e.getMessage());
+                    }
+                    break;
+
             }
 
         }
@@ -237,6 +252,23 @@ public class Main {
             } else {
                 return amount;
             }
+        }
+    }
+
+    private static boolean confirmDeletion(Scanner input, Account account) {
+        System.out.print("Are you sure you want to delete this account? This action cannot be undone (Y/N): ");
+        String answer = input.nextLine().trim();
+        if (!answer.equalsIgnoreCase("Y")) {
+            System.out.println("Account deletion cancelled.");
+            return false;
+        }
+        String cpf = readValidCpf(input, "Enter account holder's CPF to confirm: ");
+        if (cpf.equals(account.getHolder().getCpf())) {
+            System.out.println("Account deleted!");
+            return true;
+        } else {
+            System.out.println("CPF does not match account holder's CPF!");
+            return false;
         }
     }
 

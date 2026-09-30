@@ -8,4 +8,5 @@ public interface AccountRepository {
     Account findByNumber(String accountNumber);
     List<Account> findAll();
     void updateBalance(Account account);
+    void deleteAccount(Account account);
 }

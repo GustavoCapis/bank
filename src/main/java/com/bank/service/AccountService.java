@@ -65,4 +65,12 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
+    public void deleteAccount(String accountNumber) {
+        Account accountExists = accountRepository.findByNumber(accountNumber);
+        if (accountExists == null) {
+            throw new AccountNotFoundException("Account not found.");
+        }
+        accountRepository.deleteAccount(accountExists);
+        System.out.println("Account deleted successfully!");
+    }
 }

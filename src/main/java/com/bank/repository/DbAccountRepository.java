@@ -209,13 +209,41 @@ public class DbAccountRepository implements AccountRepository {
             pstmt.executeUpdate();
             System.out.println("Balance updated successfully.");
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("ERROR:" + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
             } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void deleteAccount(Account account) {
+        String sql = "DELETE FROM accounts WHERE account_number = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = DatabaseConnection.connectDb();
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, account.getAccountNumber());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("ERROR:" + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                System.out.println("ERROR:" + e.getMessage());
                 e.printStackTrace();
             }
             try {
